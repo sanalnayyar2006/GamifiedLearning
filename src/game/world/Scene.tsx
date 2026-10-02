@@ -5,6 +5,8 @@ import WorldSky from "./Sky"
 // import Cube from "./Cube"
 import Player from "../player/PlayerV";
 import InputManager from "../player/InputManager";
+import MouseInputManager from "../player/mouseInputManager";
+
 export default function Scene() {
   return (
     <>
@@ -15,6 +17,9 @@ export default function Scene() {
       <Ground />
       <Player/>
       <InputManager/>
+      <MouseInputManager/>
+
+      
     </>
   );
 }

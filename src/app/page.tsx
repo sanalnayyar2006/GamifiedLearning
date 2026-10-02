@@ -1,9 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import Scene from "../game/world/Scene";
-import { OrbitControls } from '@react-three/drei'
-
+import Game from "../game/Game";
 export default function HomePage() {
   return (
     <div className="fixed inset-0">
@@ -11,8 +9,8 @@ export default function HomePage() {
     shadows
     camera={{ position: [10, 8, 10], fov: 60 }} 
     >
-      <Scene />
-    <OrbitControls target = {[0,0,0]}/>
+      <Game/>
+      
 
     </Canvas>
 

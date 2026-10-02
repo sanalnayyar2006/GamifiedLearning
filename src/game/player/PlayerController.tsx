@@ -4,8 +4,9 @@ import type { RefObject } from "react";
 import * as THREE from "three";
 
 import { input } from "./Input";
-
+import {GameState, gameState} from "../gameState"
 const WALK_SPEED = 5;
+const SPRINT_SPEED = 15;
 const ROTATION_SPEED = 7;
 
 type PlayerControllerProps = {
@@ -16,9 +17,15 @@ export default function PlayerController({
     playerRef,
 }: PlayerControllerProps){
     useFrame(({camera},delta)=>{
-        if(!playerRef.current) return;
+        if(!playerRef.current||gameState.current!=GameState.PLAYING){
+            return
+        }
         const player = playerRef.current
 
+
+        
+
+        const currentSpeed = input.actions.sprint ? SPRINT_SPEED : WALK_SPEED;
 
         const direction = new THREE.Vector3()
 
@@ -39,13 +46,14 @@ export default function PlayerController({
             direction.add(cameraDirection);
         };
         if(input.movement.backward){
-            direction.add(cameraDirection)
+            direction.sub(cameraDirection)
         };
         if(input.movement.right){
-            direction.add(cameraRight)
+            direction.add(cameraRight)    
         };
+
         if(input.movement.left){
-            direction.add(cameraRight)
+            direction.sub(cameraRight)          //we are using sub to oppose the movement direction (0,0,-1)->(0,0,1)
         };
 
         if(direction.lengthSq()>0){
@@ -67,9 +75,9 @@ export default function PlayerController({
 
             player.position.addScaledVector(
                 direction,
-                WALK_SPEED*delta
-            );
-        };
+                currentSpeed*delta
+                );
+            };
     })
 }
 

@@ -1,0 +1,71 @@
+"use client";
+
+import { useFrame, useThree } from "@react-three/fiber";
+import { useRef } from "react";
+import type { RefObject } from "react";
+import * as THREE from "three";
+import { mouseInput } from "./mouseInput";
+import {GameState , gameState} from "../gameState"
+type CameraControllerProps = {
+  playerRef: RefObject<THREE.Group | null>;
+};
+
+const MOUSE_SENSITIVITY = 0.008;
+const CAMERA_DISTANCE = 10;
+
+export default function CameraController({
+  playerRef,
+}: CameraControllerProps) {
+  const { camera } = useThree();
+
+  const yaw = useRef(Math.PI);
+  const pitch = useRef(-0.4);
+
+  const direction = useRef(new THREE.Vector3());
+  const targetPosition = useRef(new THREE.Vector3());
+
+  useFrame(() => {
+    if (!playerRef.current||gameState.current!=GameState.PLAYING){return};
+
+    const player = playerRef.current;
+
+    // Update camera angles
+    yaw.current -= mouseInput.deltaX * MOUSE_SENSITIVITY;
+    pitch.current -= mouseInput.deltaY * MOUSE_SENSITIVITY;
+
+    // Limit vertical angle
+    pitch.current = THREE.MathUtils.clamp(
+      pitch.current,
+      -1.2,
+      0.5
+    );
+
+    // Reset mouse input
+    mouseInput.deltaX = 0;
+    mouseInput.deltaY = 0;
+
+    // Convert yaw & pitch into a direction vector
+    direction.current.set(
+      Math.sin(yaw.current) * Math.cos(pitch.current),
+      Math.sin(pitch.current),
+      Math.cos(yaw.current) * Math.cos(pitch.current)
+    );
+
+    // Camera position
+    targetPosition
+    .current
+    .copy(player.position)
+    .sub(direction.current.clone().multiplyScalar(CAMERA_DISTANCE));
+
+    camera.position.copy(targetPosition.current);
+
+    // Look at player's upper body
+    camera.lookAt(
+      player.position.x,
+      player.position.y + 1.5,
+      player.position.z
+    );
+  });
+
+  return null;
+}
