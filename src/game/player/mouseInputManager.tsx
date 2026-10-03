@@ -5,6 +5,7 @@ import { mouseInput } from "./mouseInput";
 import {useThree} from "@react-three/fiber";
 import { useGameStore } from "../../store/GameStore";
 import {GameState} from "../gameState"
+import {setGameCanvas,requestGamePointerLock} from "./pointerLock"
 export default function MouseInputManager(){
     const {gl} = useThree();
     const setGameState = useGameStore(
@@ -12,6 +13,7 @@ export default function MouseInputManager(){
     );
 
     useEffect(()=>{
+     
         const handleMouseMove = (event:MouseEvent)=>{
             if(document.pointerLockElement !== canvas)return;
 
@@ -19,11 +21,13 @@ export default function MouseInputManager(){
             mouseInput.deltaY += event.movementY;
         };
         
+     
         const canvas = gl.domElement;
-
+        setGameCanvas(canvas)
         const handleClick = ()=>{
-            canvas.requestPointerLock();
+            requestGamePointerLock();
         }
+        
 
         const handlePointerLockChange=()=>{
             if(document.pointerLockElement=== canvas){ 
@@ -33,6 +37,7 @@ export default function MouseInputManager(){
             }
             
         }
+        
 
         canvas.addEventListener(
             "click",
@@ -65,7 +70,7 @@ export default function MouseInputManager(){
         }
         
 
-    },[gl]);
+    },[gl,setGameState]);
     
     return null 
     
