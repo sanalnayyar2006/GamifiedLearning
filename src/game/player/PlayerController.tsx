@@ -4,7 +4,8 @@ import type { RefObject } from "react";
 import * as THREE from "three";
 
 import { input } from "./Input";
-import {GameState, gameState} from "../gameState"
+import {GameState} from "../gameState"
+import { useGameStore } from "../../store/GameStore";
 const WALK_SPEED = 5;
 const SPRINT_SPEED = 15;
 const ROTATION_SPEED = 7;
@@ -16,8 +17,11 @@ type PlayerControllerProps = {
 export default function PlayerController({
     playerRef,
 }: PlayerControllerProps){
+    const gameState = useGameStore(
+    (state) => state.gameState
+);
     useFrame(({camera},delta)=>{
-        if(!playerRef.current||gameState.current!=GameState.PLAYING){
+        if(!playerRef.current||gameState!=GameState.PLAYING){
             return
         }
         const player = playerRef.current

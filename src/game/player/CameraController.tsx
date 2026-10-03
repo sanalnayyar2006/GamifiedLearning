@@ -5,7 +5,8 @@ import { useRef } from "react";
 import type { RefObject } from "react";
 import * as THREE from "three";
 import { mouseInput } from "./mouseInput";
-import {GameState , gameState} from "../gameState"
+import {GameState} from "../gameState";
+import { useGameStore } from "../../store/GameStore";
 type CameraControllerProps = {
   playerRef: RefObject<THREE.Group | null>;
 };
@@ -23,10 +24,14 @@ export default function CameraController({
 
   const direction = useRef(new THREE.Vector3());
   const targetPosition = useRef(new THREE.Vector3());
+  const gameState = useGameStore(
+      (state) => state.gameState
+  );
 
   useFrame(() => {
-    if (!playerRef.current||gameState.current!=GameState.PLAYING){return};
-
+    if (!playerRef.current || gameState !== GameState.PLAYING) {
+    return;
+      }
     const player = playerRef.current;
 
     // Update camera angles

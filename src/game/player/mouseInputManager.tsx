@@ -3,9 +3,13 @@
 import { useEffect } from "react";
 import { mouseInput } from "./mouseInput";
 import {useThree} from "@react-three/fiber";
-import {GameState,gameState} from "../gameState"
+import { useGameStore } from "../../store/GameStore";
+import {GameState} from "../gameState"
 export default function MouseInputManager(){
     const {gl} = useThree();
+    const setGameState = useGameStore(
+    (state) => state.setGameState
+    );
 
     useEffect(()=>{
         const handleMouseMove = (event:MouseEvent)=>{
@@ -22,10 +26,10 @@ export default function MouseInputManager(){
         }
 
         const handlePointerLockChange=()=>{
-            if(document.pointerLockElement== canvas){ 
-               gameState.current = GameState.PLAYING
+            if(document.pointerLockElement=== canvas){ 
+               setGameState(GameState.PLAYING)
             } else{
-                gameState.current = GameState.PAUSED
+                setGameState(GameState.PAUSED)
             }
             
         }
