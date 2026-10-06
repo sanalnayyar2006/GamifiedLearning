@@ -4,11 +4,12 @@ import * as THREE from "three";
 import Character from "./Character";
 import PlayerController from "./PlayerController";
 import CameraController from "./CameraController"
+import {createCharacterState} from "./systems/physics/characterState";
 export default function Player() {
-  const playerRef = useRef<THREE.Group>(null);
-  const cameraPivotRef = useRef<THREE.Group>(null);
-  const cameraBoomRef = useRef<THREE.Group>(null);
-
+const playerRef = useRef<THREE.Group>(null);
+const cameraPivotRef = useRef<THREE.Group>(null);
+const cameraBoomRef = useRef<THREE.Group>(null);
+const characterState = useRef(createCharacterState());
   return (
     <group ref={playerRef} position={[0, 1.5, 0]}>
       <Character />
@@ -23,13 +24,14 @@ export default function Player() {
           />
       </group>
 
-      <PlayerController playerRef={playerRef} />
+    <PlayerController
+        playerRef={playerRef}
+        characterState={characterState}
+    />
 
-      <CameraController
-          playerRef={playerRef}
-          cameraPivotRef={cameraPivotRef}
-          cameraBoomRef={cameraBoomRef}
-      />
-  </group>
-  );
+    <CameraController
+        playerRef={playerRef}
+    />
+    </group>
+    );
 }
