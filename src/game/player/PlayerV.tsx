@@ -30,7 +30,7 @@ const characterState = useRef(createCharacterState());
     />
 
     <CameraController
-        playerRef={playerRef}
+        characterState={characterState}
     />
     </group>
     );

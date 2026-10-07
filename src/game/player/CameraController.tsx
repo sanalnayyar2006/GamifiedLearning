@@ -7,15 +7,16 @@ import * as THREE from "three";
 import { mouseInput } from "./mouseInput";
 import {GameState} from "../gameState";
 import { useGameStore } from "../../store/GameStore";
+import type { characterState } from "./systems/physics/characterState";
 type CameraControllerProps = {
-  playerRef: RefObject<THREE.Group | null>;
+  characterState:RefObject<characterState>;
 };
 
 const MOUSE_SENSITIVITY = 0.008;
 const CAMERA_DISTANCE = 10;
 
 export default function CameraController({
-  playerRef,
+  characterState,
 }: CameraControllerProps) {
   const { camera } = useThree();
 
@@ -29,10 +30,9 @@ export default function CameraController({
   );
 
   useFrame(() => {
-    if (!playerRef.current || gameState !== GameState.PLAYING) {
+    if (gameState !== GameState.PLAYING) {
     return;
       }
-    const player = playerRef.current;
 
     // Update camera angles
     yaw.current -= mouseInput.deltaX * MOUSE_SENSITIVITY;
@@ -59,16 +59,16 @@ export default function CameraController({
     // Camera position
     targetPosition
     .current
-    .copy(player.position)
+    .copy(characterState.current.position)
     .sub(direction.current.clone().multiplyScalar(CAMERA_DISTANCE));
 
     camera.position.copy(targetPosition.current);
 
     // Look at player's upper body
     camera.lookAt(
-      player.position.x,
-      player.position.y + 1.5,
-      player.position.z
+      characterState.current.position.x,
+      characterState.current.position.y + 1.5,
+      characterState.current.position.z
     );
   });
 
