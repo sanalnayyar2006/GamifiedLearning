@@ -5,8 +5,9 @@ export function createCharacterState(): characterState{
         position: new THREE.Vector3(0,1.5,0),
         rotation: 0,
         isJumping:true,
-        isGrounded:true,
-        isFalling:true
+        isGrounded:false,
+        isFalling:true,
+        verticalVelocity:0
 
     }
 }
@@ -16,7 +17,8 @@ export type characterState={
     rotation: number,
     isJumping:boolean,
     isGrounded:boolean,
-    isFalling:boolean
+    isFalling:boolean,
+    verticalVelocity:number
 }
 
 

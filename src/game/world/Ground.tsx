@@ -1,7 +1,8 @@
 import * as THREE from "three"
-export default function Ground() {
+import {forwardRef} from "react"
+const Ground = forwardRef<THREE.Mesh>((props,ref)=> {
   return (
-    <mesh
+    <mesh ref={ref}
         rotation={[-Math.PI / 2, 0, 0]}
         receiveShadow
     >
@@ -12,4 +13,8 @@ export default function Ground() {
         />
     </mesh>
   );
-}
+});
+
+Ground.displayName = "Ground";
+
+export default Ground;

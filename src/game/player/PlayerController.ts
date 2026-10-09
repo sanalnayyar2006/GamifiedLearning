@@ -11,13 +11,15 @@ import {updateCharacter} from "./systems/characterOrchestrator"
 type PlayerControllerProps = {
     playerRef: RefObject<THREE.Group | null>;
     characterState: RefObject<characterState>;
-}
+    groundRef: RefObject<THREE.Mesh | null>;
+};
 
 
 
 export default function PlayerController({
     playerRef,
     characterState,
+    groundRef,
 }: PlayerControllerProps) {
     const gameState = useGameStore(
     (state) => state.gameState
@@ -34,6 +36,7 @@ export default function PlayerController({
     updateCharacter(
         characterState.current,
         camera,
+        groundRef.current,
         delta
     );
 
