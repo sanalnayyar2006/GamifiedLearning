@@ -4,12 +4,13 @@ import type { characterState } from "./physics/characterState";
 
 import { calculateMovement } from "./movement/movementSystem";
 import type { MovementResult } from "./movement/movementSystem";
-
+import {input} from "../Input" 
 import { updateRotation } from "./rotation/rotationSystem";
 import { updatePhysics } from "./physics/physicsSystem";
 import { updateGravity } from "./gravity/GravitySystem";
 import { updateCollision } from "./collision/CollisionSystem";
 import { detectGround } from "./ground/GroundDetection";
+import {updateJump} from "./jump/JumpSystem"
 
 export function updateCharacter(
     state: characterState,
@@ -24,38 +25,52 @@ export function updateCharacter(
     // 2. Update horizontal velocity
     state.velocity.copy(movement.velocity);
 
-    // 3. Detect ground
-   const groundInfo = ground
-    ? detectGround(state, ground)
-    : {
-        isGrounded: false,
-        groundHeight: 0,
-    };
-
     // 4. Update rotation
     updateRotation(
         state,
         movement,
         delta
     );
+console.log("Input State", input.actions);
+    updateJump(
+    state,
+    input.actions.jump
+);
 
-    // 5. Apply gravity
-    updateGravity(
-        state,
-        delta
-    );
+console.log("1 After Jump", {
+    grounded: state.isGrounded,
+    velocity: state.verticalVelocity,
+});
 
-    // 6. Move character
-    updatePhysics(
-        state,
-        delta
-    );
+updateGravity(
+    state,
+    delta
+);
 
-    // 7. Resolve collision
+
+
+updatePhysics(
+    state,
+    delta
+);
+
+
+const groundInfo = ground
+    ? detectGround(state, ground)
+    : {
+        hasGround: false,
+        isGrounded: false,
+        groundHeight: 0,
+    };
+
+
     updateCollision(
         state,
         groundInfo
     );
+
+
+    
 
     return movement;
 }
