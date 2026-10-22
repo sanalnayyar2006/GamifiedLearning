@@ -1,12 +1,19 @@
 "use client";
+
 import { useFrame } from "@react-three/fiber";
-import type { RefObject } from "react";
+import { useRef, type RefObject } from "react";
 import * as THREE from "three";
 
-import {GameState} from "../gameState"
+import { GameState } from "../gameState";
 import { useGameStore } from "../../store/GameStore";
+
 import type { characterState } from "./systems/physics/characterState";
-import {updateCharacter} from "./systems/characterOrchestrator"
+import { updateCharacter } from "./systems/characterOrchestrator";
+
+import {
+    InteractionManager,
+    InteractionWorld,
+} from "../interaction";
 
 type PlayerControllerProps = {
     playerRef: RefObject<THREE.Group | null>;
@@ -14,41 +21,67 @@ type PlayerControllerProps = {
     groundRef: RefObject<THREE.Mesh | null>;
 };
 
-
-
 export default function PlayerController({
     playerRef,
     characterState,
     groundRef,
 }: PlayerControllerProps) {
+
     const gameState = useGameStore(
-    (state) => state.gameState
-);
+        (state) => state.gameState
+    );
+
+    // Create only once
+    const interactionWorld = useRef(
+        new InteractionWorld()
+    );
+
+    const interactionManager = useRef(
+        new InteractionManager()
+    );
+
     useFrame(({ camera }, delta) => {
 
-    if (
-        !playerRef.current ||
-        gameState !== GameState.PLAYING
-    ) return;
+        if (
+            !playerRef.current ||
+            gameState !== GameState.PLAYING
+        ) {
+            return;
+        }
 
-    const player = playerRef.current;
+        const player = playerRef.current;
 
-    updateCharacter(
-        characterState.current,
-        camera,
-        groundRef.current,
-        delta
-    );
+        // Character movement
+        updateCharacter(
+            characterState.current,
+            camera,
+            groundRef.current,
+            delta
+        );
 
-    player.position.copy(
-        characterState.current.position
-    );
+        // Update interaction system
+        interactionManager.current.update(
+            characterState.current.position,
+            interactionWorld.current.getInteractables()
+        );
 
-    player.rotation.y =
-        characterState.current.rotation;
+        // Debug nearest interactable
+        const target =
+            interactionManager.current.getCurrentTarget();
+
+        if (target) {
+            console.log(target.id);
+        }
+
+        // Apply transform to mesh
+        player.position.copy(
+            characterState.current.position
+        );
+
+        player.rotation.y =
+            characterState.current.rotation;
 
     });
-    return null
-}
 
-    
+    return null;
+}
