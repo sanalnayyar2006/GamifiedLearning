@@ -4,13 +4,13 @@ import type { characterState } from "./physics/characterState";
 
 import { calculateMovement } from "./movement/movementSystem";
 import type { MovementResult } from "./movement/movementSystem";
-import {input} from "../Input" 
+// import {input} from "../Input" 
 import { updateRotation } from "./rotation/rotationSystem";
 import { updatePhysics } from "./physics/physicsSystem";
 import { updateGravity } from "./gravity/GravitySystem";
 import { updateCollision } from "./collision/CollisionSystem";
 import { detectGround } from "./ground/GroundDetection";
-import {updateJump} from "./jump/JumpSystem"
+// import {updateJump} from "./jump/JumpSystem"
 
 export function updateCharacter(
     state: characterState,
