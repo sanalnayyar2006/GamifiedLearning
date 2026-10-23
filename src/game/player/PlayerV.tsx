@@ -8,13 +8,20 @@ import Character from "./Character";
 import PlayerController from "./PlayerController";
 import CameraController from "./CameraController";
 import { createCharacterState } from "./systems/physics/characterState";
+import { InteractionManager, InteractionWorld } from "../interaction";
 
 type PlayerProps = {
     groundRef: RefObject<THREE.Mesh | null>;
+
+    interactionWorld: RefObject<InteractionWorld>;
+
+    interactionManager: RefObject<InteractionManager>;
 };
 
 export default function Player({
     groundRef,
+    interactionWorld,
+    interactionManager,
 }: PlayerProps) {
     const playerRef = useRef<THREE.Group>(null);
     const cameraPivotRef = useRef<THREE.Group>(null);
@@ -40,6 +47,8 @@ export default function Player({
                 playerRef={playerRef}
                 characterState={characterState}
                 groundRef={groundRef}
+                interactionWorld={interactionWorld}
+                interactionManager={interactionManager}
             />
 
             <CameraController

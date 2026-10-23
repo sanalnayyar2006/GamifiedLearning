@@ -21,11 +21,6 @@ export function detectGround(
     raycaster.far = RAY_LENGTH;
 
     const hits = raycaster.intersectObject(ground, true);
-    console.log({
-    playerY: state.position.y,
-    originY: origin.y,
-    hits: hits.length,
-});
 
     if (hits.length === 0) {
         return {
@@ -35,8 +30,6 @@ export function detectGround(
         };
     }
     const hit = hits[0];
-
-    console.log("Ground Distance:", hit.distance);
 
     return {
         hasGround:true,

@@ -31,16 +31,9 @@ export function updateCharacter(
         movement,
         delta
     );
-console.log("Input State", input.actions);
-    updateJump(
-    state,
-    input.actions.jump
-);
 
-console.log("1 After Jump", {
-    grounded: state.isGrounded,
-    velocity: state.verticalVelocity,
-});
+
+
 
 updateGravity(
     state,

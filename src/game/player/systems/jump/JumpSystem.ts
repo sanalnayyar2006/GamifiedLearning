@@ -5,11 +5,7 @@ export function updateJump(
     state: characterState,
     jumpPressed: boolean
 ) {
-    console.log("Before Jump", {
-        jumpPressed,
-        grounded: state.isGrounded,
-        velocity: state.verticalVelocity,
-    });
+    
 
     if (!jumpPressed) return;
     if (!state.isGrounded) return;
@@ -19,8 +15,5 @@ export function updateJump(
     state.isJumping = true;
     state.isFalling = false;
 
-    console.log("After Jump", {
-        grounded: state.isGrounded,
-        velocity: state.verticalVelocity,
-    });
+    
 }

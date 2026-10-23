@@ -17,28 +17,29 @@ import {
 
 type PlayerControllerProps = {
     playerRef: RefObject<THREE.Group | null>;
+
     characterState: RefObject<characterState>;
+
     groundRef: RefObject<THREE.Mesh | null>;
+
+    interactionWorld: RefObject<InteractionWorld>;
+
+    interactionManager: RefObject<InteractionManager>;
 };
 
 export default function PlayerController({
     playerRef,
     characterState,
     groundRef,
+    interactionWorld,
+    interactionManager,
 }: PlayerControllerProps) {
 
     const gameState = useGameStore(
         (state) => state.gameState
     );
 
-    // Create only once
-    const interactionWorld = useRef(
-        new InteractionWorld()
-    );
 
-    const interactionManager = useRef(
-        new InteractionManager()
-    );
 
     useFrame(({ camera }, delta) => {
 
@@ -58,13 +59,11 @@ export default function PlayerController({
             groundRef.current,
             delta
         );
-
         // Update interaction system
         interactionManager.current.update(
-            characterState.current.position,
-            interactionWorld.current.getInteractables()
+        characterState.current.position,
+        interactionWorld.current.getInteractables()
         );
-
         // Debug nearest interactable
         const target =
             interactionManager.current.getCurrentTarget();
