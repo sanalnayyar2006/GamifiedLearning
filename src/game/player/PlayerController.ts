@@ -1,7 +1,7 @@
 "use client";
 
 import { useFrame } from "@react-three/fiber";
-import { useRef, type RefObject } from "react";
+import { type RefObject } from "react";
 import * as THREE from "three";
 
 import { GameState } from "../gameState";
