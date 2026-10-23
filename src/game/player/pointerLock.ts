@@ -8,7 +8,6 @@ export function setGameCanvas(
 }
 
 export function requestGamePointerLock() {
-    console.log("requestGamePointerLock called");
     if (!canvas) return;
 
     if (document.pointerLockElement !== canvas) {

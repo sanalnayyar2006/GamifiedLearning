@@ -3,17 +3,13 @@
 import { useFrame } from "@react-three/fiber";
 import { type RefObject } from "react";
 import * as THREE from "three";
-
+// import { input } from "./Input";
 import { GameState } from "../gameState";
 import { useGameStore } from "../../store/GameStore";
 
 import type { characterState } from "./systems/physics/characterState";
 import { updateCharacter } from "./systems/characterOrchestrator";
 
-import {
-    InteractionManager,
-    InteractionWorld,
-} from "../interaction";
 
 type PlayerControllerProps = {
     playerRef: RefObject<THREE.Group | null>;
@@ -22,17 +18,12 @@ type PlayerControllerProps = {
 
     groundRef: RefObject<THREE.Mesh | null>;
 
-    interactionWorld: RefObject<InteractionWorld>;
-
-    interactionManager: RefObject<InteractionManager>;
 };
 
 export default function PlayerController({
     playerRef,
     characterState,
     groundRef,
-    interactionWorld,
-    interactionManager,
 }: PlayerControllerProps) {
 
     const gameState = useGameStore(
@@ -59,18 +50,8 @@ export default function PlayerController({
             groundRef.current,
             delta
         );
-        // Update interaction system
-        interactionManager.current.update(
-        characterState.current.position,
-        interactionWorld.current.getInteractables()
-        );
-        // Debug nearest interactable
-        const target =
-            interactionManager.current.getCurrentTarget();
-
-        if (target) {
-            console.log(target.id);
-        }
+        
+        
 
         // Apply transform to mesh
         player.position.copy(

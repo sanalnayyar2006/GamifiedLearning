@@ -9,6 +9,7 @@ import PlayerController from "./PlayerController";
 import CameraController from "./CameraController";
 import { createCharacterState } from "./systems/physics/characterState";
 import { InteractionManager, InteractionWorld } from "../interaction";
+import InteractionController from "./InteractionController";
 
 type PlayerProps = {
     groundRef: RefObject<THREE.Mesh | null>;
@@ -47,6 +48,9 @@ export default function Player({
                 playerRef={playerRef}
                 characterState={characterState}
                 groundRef={groundRef}
+            />
+            <InteractionController
+                characterState={characterState}
                 interactionWorld={interactionWorld}
                 interactionManager={interactionManager}
             />
