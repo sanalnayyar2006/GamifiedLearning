@@ -5,26 +5,35 @@ export class DialogueManager {
 
     private currentDialogue: Dialogue | null = null;
 
-    private currentNode: DialogueNode | null = null;
+    private currentNodeId: string | null = null;
 
     public start(dialogue: Dialogue): void {
 
         this.currentDialogue = dialogue;
 
-        this.currentNode =
-            dialogue.nodes[dialogue.startNodeId];
+        this.currentNodeId =
+            dialogue.startNodeId;
     }
 
     public end(): void {
 
         this.currentDialogue = null;
 
-        this.currentNode = null;
+        this.currentNodeId = null;
     }
 
     public getCurrentNode(): DialogueNode | null {
 
-        return this.currentNode;
+        if (
+            !this.currentDialogue ||
+            !this.currentNodeId
+        ) {
+            return null;
+        }
+
+        return this.currentDialogue.nodes[
+            this.currentNodeId
+        ];
     }
 
     public isActive(): boolean {
