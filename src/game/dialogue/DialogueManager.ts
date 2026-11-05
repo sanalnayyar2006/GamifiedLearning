@@ -14,6 +14,21 @@ export class DialogueManager {
         this.currentNodeId =
             dialogue.startNodeId;
     }
+    public next(): void {
+
+    const currentNode = this.getCurrentNode();
+
+    if (!currentNode) {
+        return;
+    }
+
+    if (!currentNode.nextNodeId) {
+        this.end();
+        return;
+    }
+
+    this.currentNodeId = currentNode.nextNodeId;
+}
 
     public end(): void {
 
