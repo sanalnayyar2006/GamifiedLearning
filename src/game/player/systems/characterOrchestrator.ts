@@ -10,13 +10,14 @@ import { updatePhysics } from "./physics/physicsSystem";
 import { updateGravity } from "./gravity/GravitySystem";
 import { updateCollision } from "./collision/CollisionSystem";
 import { detectGround } from "./ground/GroundDetection";
-// import {updateJump} from "./jump/JumpSystem"
+import { updateJump } from "./jump/JumpSystem";
 
 export function updateCharacter(
     state: characterState,
     camera: THREE.Camera,
     ground: THREE.Object3D | null,
-    delta: number
+    delta: number,
+    jumpPressed: boolean
 ): MovementResult {
 
     // 1. Read player input
@@ -34,6 +35,8 @@ export function updateCharacter(
 
 
 
+
+updateJump(state, jumpPressed);
 
 updateGravity(
     state,

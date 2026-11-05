@@ -7,6 +7,7 @@ export const input = {
     },
     actions: {
         jump: false,
+        jumpPressed: false,
         interact: false,
         sprint: false,
     },

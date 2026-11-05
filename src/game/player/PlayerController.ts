@@ -3,7 +3,7 @@
 import { useFrame } from "@react-three/fiber";
 import { type RefObject } from "react";
 import * as THREE from "three";
-// import { input } from "./Input";
+import { input } from "./Input";
 import { GameState } from "../gameState";
 import { useGameStore } from "../../store/GameStore";
 
@@ -31,8 +31,9 @@ export default function PlayerController({
     );
 
 
-
     useFrame(({ camera }, delta) => {
+        const jumpPressed = input.actions.jumpPressed;
+        input.actions.jumpPressed = false;
 
         if (
             !playerRef.current ||
@@ -48,7 +49,8 @@ export default function PlayerController({
             characterState.current,
             camera,
             groundRef.current,
-            delta
+            delta,
+            jumpPressed
         );
         
         

@@ -24,6 +24,10 @@ export default function InputManager() {
           break;
 
         case "Space":
+          event.preventDefault();
+          if (!input.actions.jump) {
+            input.actions.jumpPressed = true;
+          }
           input.actions.jump = true;
           break;
 
